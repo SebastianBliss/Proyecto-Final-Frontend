@@ -1,4 +1,4 @@
-const tareas = [
+let tareas = [
     {
         "_id": "1",
         "titulo": "caminar",
@@ -49,25 +49,53 @@ const obtenerTareas = async () => {
 const verTarea = async (id) => {
     // enviar consulta a la API para obtener la tarea con el id
     //alert('tarea obtenida')
-    return {
-        "_id": "4",
-        "titulo": "caminata en las mañanas",
-        "descripcion": "salir a caminar en las mañanas",
-        "estado": "activa",
-        "responsable": "sebas"
+    const tareaEncontrada = tareas.find((tarea) => {
+        if (id === tarea._id) {
+            return true
+        }
+        return false
+    })
+
+    if (tareaEncontrada) {
+        return tareaEncontrada
+    } else {
+        alert('tareaEncontrada')
     }
 }
 
 const editarTarea = async (id, tareaEditada) => {
     // enviar consulta a la API para obtener la tarea con el id
-    alert('tarea editada')
+    //alert('tarea editada')
+
+    const listaTareasModificadas = tareas.map((tarea) =>{
+        if (id === tarea._id) {
+            tareaEditada._id = id
+            return tareaEditada
+        }
+
+        return tarea
+    })
+
+    tareas = listaTareasModificadas
 }
 
 
 const eliminarTarea = async (id) => {
     // enviar consulta a la API para eliminar la tarea con el id
-    alert('tarea eliminada')
+    //alert('tarea eliminada')
+
+    //nos devuelve todas las tareas excepto la que eliminamos
+    tareas.filter((tarea)=>{
+        //!== hace referencia a diferente
+        if (tarea._id !== id) {
+            return true
+        }
+        return false
+    })
+    tareas = tareasFiltradas
 }
+
+
 
 // -----------------------  Renderizar tareas en el HTML -----------------------
 const listaTareas = document.getElementById('lista-tareas')
@@ -172,10 +200,18 @@ const renderTareas = async () => {
 
                     await editarTarea(tarea._id, data)
 
+                    wrapperEditarTarea.style.display = 'none'
+
                     //cada vez que se ejecuta una tarea se rederiza de nuevo para que vuelva a cargar la info
                     renderTareas()
 
                 })
+        })
+
+        //agregar evento click al boton eliminar
+        buttonEliminar.addEventListener ('click', async ()=> {
+            await eliminarTarea(tarea._id)
+            renderTareas()
         })
 
         })
