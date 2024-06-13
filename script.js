@@ -1,3 +1,5 @@
+let estado = ''
+
 let tareas = [
     {
         "_id": "1",
@@ -32,16 +34,31 @@ let tareas = [
 const crearTarea = async (tarea) => {
     // enviar consulta a la API para crear una tarea
     //alert('tarea creada')
+    console.log(tarea)
+    await fetch ('https://localhost:3000/api/v1/tareas',{
+        method: 'POST',
+        //conviente el json a formato texto para enviarlo a la API
+        body: JSON.stringify(tarea),
+        //Esto le indica que le vamos a enviar info json para que lo identifique
+        headers: {
+        'Content-Type' : 'application/json'
+        }
+    })
 
-    tarea.estado = 'inactivo'
+
+   /*  tarea.estado = 'inactivo'
     //esta funcion hace que nu
-    tareas.push(tarea)
+    tareas.push(tarea) */
 }
 
 const obtenerTareas = async () => {
     // enviar consulta a la API para obtener todas las tareas
-
-    return tareas
+    const response = await fetch ('https://localhost:3000/api/v1/tareas/')
+    const data = await response.json()
+    
+    return data.data
+    
+    /* return tareas */
 }
 
 
@@ -49,7 +66,12 @@ const obtenerTareas = async () => {
 const verTarea = async (id) => {
     // enviar consulta a la API para obtener la tarea con el id
     //alert('tarea obtenida')
-    const tareaEncontrada = tareas.find((tarea) => {
+    const response = await fetch ('https://localhost:3000/api/v1/tareas/'+ id)
+    const data = await response.json()
+    
+    return data.data
+
+    /* const tareaEncontrada = tareas.find((tarea) => {
         if (id === tarea._id) {
             return true
         }
@@ -60,14 +82,21 @@ const verTarea = async (id) => {
         return tareaEncontrada
     } else {
         alert('tareaEncontrada')
-    }
+    }*/
 }
 
 const editarTarea = async (id, tareaEditada) => {
     // enviar consulta a la API para obtener la tarea con el id
     //alert('tarea editada')
+    await fetch('https://localhost:3000/api/v1/tareas/'+ id, {
+        method: 'PUT',
+        body: JSON.stringify(tareaEditada),
+        headers: {
+            'Content-Type' : 'application/json'
+        }
 
-    const listaTareasModificadas = tareas.map((tarea) =>{
+    }) 
+    /* const listaTareasModificadas = tareas.map((tarea) =>{
         if (id === tarea._id) {
             tareaEditada._id = id
             return tareaEditada
@@ -76,7 +105,7 @@ const editarTarea = async (id, tareaEditada) => {
         return tarea
     })
 
-    tareas = listaTareasModificadas
+    tareas = listaTareasModificadas */
 }
 
 
@@ -84,7 +113,11 @@ const eliminarTarea = async (id) => {
     // enviar consulta a la API para eliminar la tarea con el id
     //alert('tarea eliminada')
 
-    //nos devuelve todas las tareas excepto la que eliminamos
+    await fetch('https://localhost:3000/api/v1/tareas/'+ id, {
+        method: 'DELETE',
+
+    })
+/*     //nos devuelve todas las tareas excepto la que eliminamos
     tareas.filter((tarea)=>{
         //!== hace referencia a diferente
         if (tarea._id !== id) {
@@ -93,6 +126,7 @@ const eliminarTarea = async (id) => {
         return false
     })
     tareas = tareasFiltradas
+ */
 }
 
 
@@ -261,9 +295,14 @@ formCrearTarea.addEventListener('submit', async (e) => {
 })
 
 // -----------------------  Filtrar tareas por estado -----------------------
-let estado = ''
+
 const selectEstado = document.getElementById('select-estado')
 selectEstado.addEventListener('change', (e) => {
+    console.log(e.target.value)
+    estado = e.target.value
+
+    renderTareas()
+
 })
 
 window.addEventListener('load', renderTareas)
