@@ -53,7 +53,13 @@ const crearTarea = async (tarea) => {
 
 const obtenerTareas = async () => {
     // enviar consulta a la API para obtener todas las tareas
-    const response = await fetch ('https://localhost:3000/api/v1/tareas/')
+    
+    let query= ''
+    if (estado) {
+        query = '?estado=' + estado
+    }
+    
+    const response = await fetch ('https://localhost:3000/api/v1/tareas' + query)
     const data = await response.json()
     
     return data.data
