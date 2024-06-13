@@ -35,7 +35,7 @@ const crearTarea = async (tarea) => {
     // enviar consulta a la API para crear una tarea
     //alert('tarea creada')
     console.log(tarea)
-    await fetch ('https://localhost:3000/api/v1/tareas',{
+    await fetch ('https://proyecto-final-backend-hazel.vercel.app/api/v1/tareas',{
         method: 'POST',
         //conviente el json a formato texto para enviarlo a la API
         body: JSON.stringify(tarea),
@@ -59,7 +59,7 @@ const obtenerTareas = async () => {
         query = '?estado=' + estado
     }
     
-    const response = await fetch ('https://localhost:3000/api/v1/tareas' + query)
+    const response = await fetch ('https://proyecto-final-backend-hazel.vercel.app/api/v1/tareas' + query)
     const data = await response.json()
     
     return data.data
@@ -72,7 +72,7 @@ const obtenerTareas = async () => {
 const verTarea = async (id) => {
     // enviar consulta a la API para obtener la tarea con el id
     //alert('tarea obtenida')
-    const response = await fetch ('https://localhost:3000/api/v1/tareas/'+ id)
+    const response = await fetch ('https://proyecto-final-backend-hazel.vercel.app/api/v1/tareas'+ id)
     const data = await response.json()
     
     return data.data
@@ -94,7 +94,7 @@ const verTarea = async (id) => {
 const editarTarea = async (id, tareaEditada) => {
     // enviar consulta a la API para obtener la tarea con el id
     //alert('tarea editada')
-    await fetch('https://localhost:3000/api/v1/tareas/'+ id, {
+    await fetch('https://proyecto-final-backend-hazel.vercel.app/api/v1/tareas' + id, {
         method: 'PUT',
         body: JSON.stringify(tareaEditada),
         headers: {
@@ -119,7 +119,7 @@ const eliminarTarea = async (id) => {
     // enviar consulta a la API para eliminar la tarea con el id
     //alert('tarea eliminada')
 
-    await fetch('https://localhost:3000/api/v1/tareas/'+ id, {
+    await fetch('https://proyecto-final-backend-hazel.vercel.app/api/v1/tareas'+ id, {
         method: 'DELETE',
 
     })
